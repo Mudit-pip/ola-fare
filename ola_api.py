@@ -17,14 +17,18 @@ port = int(os.environ.get("PORT", 5000))
 
 # Initialize the driver
 def init_driver():
-    # options = Options()
     options = webdriver.ChromeOptions()
     options.add_argument("--disable-notifications")
-    options.add_argument("--headless")  # Ensure the browser runs in headless mode
-    options.add_argument("--no-sandbox")  # Required for some hosting platforms
-    options.add_argument("--disable-dev-shm-usage")  # Optimize for limited resources
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
-    
+    options.add_argument("--headless")  # Run without GUI
+    options.add_argument("--no-sandbox")  # Required in some environments
+    options.add_argument("--disable-dev-shm-usage")  # Prevent resource issues
+    options.binary_location = "/usr/bin/google-chrome"  # Path to Chrome binary
+
+    # Initialize the WebDriver with the correct paths
+    driver = webdriver.Chrome(
+        service=Service("/usr/local/bin/chromedriver"),  # Path to ChromeDriver
+        options=options
+    )
     return driver
 
 # Load cookies if available
